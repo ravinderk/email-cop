@@ -6,15 +6,8 @@
 // Exit if accessed directly
 if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) exit;
 
-//get all wp_cop_email post_type post ids
-$email_cop_post_ids = get_posts(
-	array(
-		'post_type' => 'wp_cop_email',
-		'post_status' => 'any',
-		'posts_per_page' => -1,
-		'fields' => 'ids'
-	)
-);
+// pick irrespective of post status, including trashed ones
+$email_cop_post_ids = $wpdb->get_col( "SELECT ID FROM $wpdb->posts WHERE post_type = 'wp_cop_email';" );
 
 //delete posts
 if ( $email_cop_post_ids ) {
